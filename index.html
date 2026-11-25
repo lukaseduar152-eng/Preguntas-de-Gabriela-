@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabriela Quiz</title>
+<style>
+body {
+  background: #17172b;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 20px;
+}
+.contenedor {
+  background: #292947;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 20px;
+}
+h1 { color: #d5a6ff; }
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 10px;
+  background: #8064c9;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover { background: #a58be9; }
+#resultado { color: #a9f5ca; }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+<h1>📖 Gabriela Quiz</h1>
+<p>El reflejo de nuestra sociedad</p>
+<p id="progreso"></p>
+<h2 id="pregunta">¡Bienvenido al desafío!</h2>
+<div id="opciones"></div>
+<h3 id="resultado"></h3>
+<p id="puntos"></p>
+<button id="inicio" onclick="comenzar()">Comenzar juego</button>
+</div>
+
+<script>
+const preguntas = [
+{
+pregunta: "1. ¿Quién escribió la obra Gabriela?",
+opciones: ["Jaime Aduana Quintana", "Gabriel García Márquez", "Adolfo Costa du Rels"],
+correcta: "Jaime Aduana Quintana"
+},
+{
+pregunta: "2. ¿En qué país nació el autor?",
+opciones: ["Perú", "Bolivia", "Argentina"],
+correcta: "Bolivia"
+},
+{
+pregunta: "3. ¿En qué ciudad nació Jaime Aduana Quintana?",
+opciones: ["La Paz", "Cochabamba", "Oruro"],
+correcta: "Oruro"
+},
+{
+pregunta: "4. ¿En qué año se publicó la obra?",
+opciones: ["1995", "2003", "2010"],
+correcta: "2003"
+},
+{
+pregunta: "5. ¿Qué estudió el autor?",
+opciones: ["Medicina", "Administración de Empresas", "Arquitectura"],
+correcta: "Administración de Empresas"
+},
+{
+pregunta: "6. ¿Quién es la protagonista de la obra?",
+opciones: ["Catalina", "Gabriela", "Esther"],
+correcta: "Gabriela"
+},
+{
+pregunta: "7. ¿Quién es Pedro en la historia?",
+opciones: ["El hermano de Gabriela", "El padre de Gabriela", "Un profesor"],
+correcta: "El hermano de Gabriela"
+},
+{
+pregunta: "8. ¿Qué problema social aborda la obra?",
+opciones: ["La drogadicción", "El turismo", "La contaminación"],
+correcta: "La drogadicción"
+},
+{
+pregunta: "9. ¿En qué décadas se desarrolla principalmente la historia?",
+opciones: ["1960 y 1970", "1980 y 1990", "2000 y 2010"],
+correcta: "1980 y 1990"
+},
+{
+pregunta: "10. ¿Qué busca promover la obra?",
+opciones: [
+"La prevención de problemas sociales",
+"El entretenimiento deportivo",
+"El desarrollo tecnológico"
+],
+correcta: "La prevención de problemas sociales"
+}
+];
+
+let actual = 0;
+let puntuacion = 0;
+
+function comenzar() {
+actual = 0;
+puntuacion = 0;
+document.getElementById("inicio").style.display = "none";
+mostrarPregunta();
+}
+
+function mostrarPregunta() {
+if (actual >= preguntas.length) {
+finalizar();
+return;
+}
+
+let p = preguntas[actual];
+
+document.getElementById("progreso").textContent =
+"Pregunta " + (actual + 1) + " de 10";
+
+document.getElementById("pregunta").textContent = p.pregunta;
+document.getElementById("resultado").textContent = "";
+document.getElementById("puntos").textContent =
+"⭐ Puntos: " + puntuacion;
+
+let zona = document.getElementById("opciones");
+zona.innerHTML = "";
+
+p.opciones.forEach(opcion => {
+let boton = document.createElement("button");
+boton.textContent = opcion;
+boton.onclick = () => responder(opcion);
+zona.appendChild(boton);
+});
+}
+
+function responder(respuesta) {
+let correcta = preguntas[actual].correcta;
+
+if (respuesta === correcta) {
+puntuacion++;
+document.getElementById("resultado").textContent =
+"¡Correcto! 🎉";
+} else {
+document.getElementById("resultado").textContent =
+"Respuesta incorrecta. Era: " + correcta;
+}
+
+document.getElementById("opciones").innerHTML = "";
+
+let boton = document.createElement("button");
+boton.textContent = "Siguiente ➜";
+boton.onclick = () => {
+actual++;
+mostrarPregunta();
+};
+
+document.getElementById("opciones").appendChild(boton);
+}
+
+function finalizar() {
+document.getElementById("progreso").textContent =
+"¡Desafío completado!";
+
+document.getElementById("pregunta").textContent =
+"🏆 ¡Terminaste el juego!";
+
+document.getElementById("resultado").textContent =
+"Tu puntuación: " + puntuacion + "/10";
+
+document.getElementById("puntos").textContent =
+puntuacion === 10 ? "¡Excelente trabajo!" :
+puntuacion >= 6 ? "¡Buen trabajo!" :
+"¡Sigue aprendiendo!";
+
+document.getElementById("opciones").innerHTML = "";
+document.getElementById("inicio").style.display = "block";
+document.getElementById("inicio").textContent = "Volver a jugar";
+}
+</script>
+</body>
+</html>
